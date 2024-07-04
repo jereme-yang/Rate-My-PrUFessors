@@ -1,0 +1,107 @@
+.prof-card-rating-title {
+  font-weight: bold;
+  display: block;
+  font-size: 25px;
+}
+.prof-card-rating-text {
+  font-size: 1em;
+}
+.prof-card-main-info {
+  display: flex;  
+  justify-content: center; 
+  align-items: center;
+  padding-top: 3px;
+  padding-bottom: 5px;
+}
+.prof-card-meter-title {
+  font-size: 1.3em;
+}
+.prof-card-meter-section {
+  /* possible block */
+  display: flex;  
+  justify-content: center; 
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+.prof-card-tags {
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+.prof-card-tag-bubble {
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 5px;
+    border-radius:20px;
+    background-color: 'rgba(128, 128, 128, 0.25)';
+}
+
+
+.link-name {
+  text-decoration: none; 
+  margin-left: auto;
+  padding-left:10px;
+  text-align: right;
+}
+.link-balance {
+  color: rgb(128, 128, 128);
+  float: bottom; 
+  text-align: right;
+  font-size: 1em;
+}
+.rating-number {
+    text-align: center;
+    padding: 10px;
+    width: 41px;
+    height: 41px;
+    margin-left: 0px;
+    border-radius:10px;
+    margin-bottom: 3px;
+}
+  
+
+/* The green (optimum) bar in Firefox */
+.normal-meter meter:-moz-meter-optimum::-moz-meter-bar {
+  background: rgba(0, 128, 0, 0.25);
+}
+.inverse-meter meter:-moz-meter-optimum::-moz-meter-bar {
+  background: rgba(128, 0, 0, 0.25);
+}
+/* The green (optimum) bar in Chrome etc. */
+.normal-meter meter::-webkit-meter-optimum-value {
+  background: rgba(0, 128, 0, 0.25);
+}
+.inverse-meter meter::-webkit-meter-optimum-value {
+  background: rgba(128, 0, 0, 0.25);
+}
+/* The yellow (sub-optimum) bar in Firefox */
+.normal-meter meter:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: rgba(255, 255, 0, 0.25);
+}
+.inverse-meter meter:-moz-meter-sub-optimum::-moz-meter-bar {
+  background: rgba(255, 255, 0, 0.25);
+}
+/* The yellow (sub-optimum) bar in Chrome etc. */
+.normal-meter meter::-webkit-meter-suboptimum-value {
+  background: rgba(255, 255, 0, 0.25);
+}
+.inverse-meter meter::-webkit-meter-suboptimum-value {
+  background: rgba(255, 255, 0, 0.25);
+}
+/* The red (even less good) bar in Firefox */
+.normal-meter meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+  background: rgba(128, 0, 0, 0.25);
+}
+.inverse-meter meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
+  background: rgba(0, 128, 0, 0.25);
+}
+/* The red (even less good) bar in Chrome etc. */
+.normal-meter meter::-webkit-meter-even-less-good-value{
+  background: rgba(128, 0, 0, 0.25);
+}
+.inverse-meter meter::-webkit-meter-even-less-good-value {
+  background: rgba(0, 128, 0, 0.25);
+}
