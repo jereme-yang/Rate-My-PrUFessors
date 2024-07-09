@@ -30,10 +30,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CalvinWu4/RIT-Rate-My-Professor-Extension.git"
+    "url": "git+https://github.com/jereme-yang/Rate-My-PrUFessors.git"
   },
   "bugs": {
-    "url": "https://github.com/CalvinWu4/RIT-Rate-My-Professor-Extension/issues"
+    "url": "https://github.com/jereme-yang/Rate-My-PrUFessors/issues"
   },
-  "homepage": "https://github.com/CalvinWu4/RIT-Rate-My-Professor-Extension#readme"
+  "homepage": "https://github.com/jereme-yang/Rate-My-PrUFessors#readme"
 }

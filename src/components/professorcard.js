@@ -73,7 +73,7 @@ function wouldtakeagainSection(div, profData) {
 	  );
 	div.appendChild(Object.assign(
 		document.createElement('strong'), {
-		className: 'meter-title',
+		className: 'prof-card-meter-title',
 		textContent: `${getTakeAgainEmoji(profData.wouldTakeAgainPercentage ?? "N/A")} Would take again`
 	  })
 	);
@@ -89,6 +89,7 @@ function tagsSection(div, profData) {
 		tags.forEach(t => {
 		  const div = document.createElement('div');
 		  div.classList.add('prof-card-tag-bubble');
+		  div.style.backgroundColor =  'rgba(128, 128, 128, 0.25)'
 	  
 		  const tag = document.createElement('strong');
 		  tag.textContent = t;

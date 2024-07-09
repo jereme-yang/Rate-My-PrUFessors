@@ -38,6 +38,7 @@ selectors.forEach((selector) => {
 			.then((results) => linkProfessor(target, results, lastName, UF_SCHOOL_ID))
 			.catch((error) => {
 					// if no luck, then provide a link with just [Last Name]
+					console.log(error);
 					linkProfessor(target, [], lastName, UF_SCHOOL_ID)
 					return
 				}
@@ -207,10 +208,10 @@ function linkProfessor(element, results, lastName, schoolId) {
 	const result = results.find(result => isCloseEnough(result.getFullName(), element.textContent));
 	
 	// create a professor tag / card
-	if (!result) {
+	if (result === undefined) {
 		setupProfTag(element, [], lastName, schoolId, false);
 	} else {
-		let profData = results[i]
+		let profData = result;
 		setupProfTag(element, profData, lastName, schoolId, true);
 		setupProfCard(element, profData);
 	}

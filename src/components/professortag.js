@@ -11,7 +11,6 @@ export function setupProfTag(element, profData, lastName, schoolId, isFound = tr
 	aTag.textContent = element.textContent;
 	
 	element.textContent = '';
-	element.appendChild(rating);
 	
     const balance = Object.assign(
         document.createElement('div'), {

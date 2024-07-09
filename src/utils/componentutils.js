@@ -42,7 +42,7 @@ export function createMeter(value, max, inverse) {
 	meter.style.flex = "1";
   
 	// Apply inverse or normal meter style
-	inverse ? div.classList.add("inverse-meter") : div.classList.add("normal-meter");
+	inverse ? container.classList.add("inverse-meter") : container.classList.add("normal-meter");
   
 	// Append meter to container
 	container.appendChild(meter);

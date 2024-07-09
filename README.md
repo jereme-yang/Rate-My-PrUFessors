@@ -1,10 +1,15 @@
 # Rate My PrUFessors Extension
 
-[**Chrome** extension][link-chrome] [<img valign="middle" src="https://img.shields.io/chrome-web-store/v/lcionigofpcbfpmnipnioapimoggnbda.svg?label=%20">](https://chromewebstore.google.com/detail/rate-my-prufessors/aabhhefmldjjhcnacbpgooeanamkallk?hl=en&authuser=0)
+[**Chrome** extension][link-chrome] 
 
-[**Firefox** addon][link-firefox] [<img valign="middle" src="https://img.shields.io/amo/v/rate-my-professors-for-rit.svg?label=%20">][link-firefox]
+[**Firefox** addon][link-firefox] 
 
-This extension shows the [Rate My Professors](https://www.ratemyprofessors.com/) ratings of professors while searching for classes on [ONE.UF]().
+[**Safari** addon][link-safari]
+
+[**Edge** extension][link-chrome]
+
+
+This extension shows the [Rate My Professors](https://www.ratemyprofessors.com/) ratings of professors while searching for classes on [ONE.UF](https://one.uf.edu/soc/).
 
 Professors' names will link to their Rate My Professors page (or the search results if not found).
 
@@ -14,7 +19,8 @@ To better find professors while preventing false negatives, this extension utili
 ![Screenshot](images/screenshot2.png)
 
 [link-chrome]: https://chrome.google.com/webstore/detail/rate-my-professors-for-ri/lcionigofpcbfpmnipnioapimoggnbda?hl=en&authuser=0 "Version published on Chrome Web Store"
-<!-- [link-firefox]: https://addons.mozilla.org/en-US/firefox/addon/rate-my-professors-for-rit/ "Version published on Mozilla Add-ons" -->
+[link-firefox]: https://addons.mozilla.org/firefox/downloads/file/4307708/rate_my_prufessors-2.0.5.xpi "Version for Mozilla Add-ons (private)"
+[link-safari]: https://TODO.com "Version for Apple Safari"
 
 
 ## Building
