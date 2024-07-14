@@ -15,7 +15,7 @@ Professors' names will link to their Rate My Professors page (or the search resu
 
 To better find professors while preventing false negatives, this extension utilizes input filtering by mapping certain professor names to their associated nick name (i.e. Shu-jen Huang -> Shu Huang). The search results are then compared against the original input to verify that a false negative result is not shown.
 
-![Screenshot](images/screenshot.png)
+![Screenshot](images/screenshot1.png)
 ![Screenshot](images/screenshot2.png)
 
 [link-chrome]: https://chrome.google.com/webstore/detail/rate-my-professors-for-ri/lcionigofpcbfpmnipnioapimoggnbda?hl=en&authuser=0 "Version published on Chrome Web Store"

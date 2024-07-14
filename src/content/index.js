@@ -8,6 +8,8 @@ import { setupProfTag } from '../components/professortag.js';
 
 import { UF_SCHOOL_ID } from '../constants/school.js';
 
+import LRUCache from '../utils/lrucache.js';
+
 import browser from "webextension-polyfill";
 
 import 'arrive';
@@ -26,16 +28,25 @@ for (const css of csses) {
 
 
 // driver code to call API queries and append html contents
+const cache = new LRUCache(15);
 const selectors = ['.sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-epRvzc.fFLxNM'];
 selectors.forEach((selector) => {
 	document.arrive(selector, function (target) {
 		let profname = filterNonProfessors(target.textContent.trim());
 		profname = replaceCustomNicknames(profname);
-		let lastName = profname.split(' ')
-		lastName = lastName[lastName.length - 1]
-
-		searchProfessorByName(profname, UF_SCHOOL_ID)
-			.then((results) => linkProfessor(target, results, lastName, UF_SCHOOL_ID))
+		let lastName = profname.split(' ');
+		lastName = lastName[lastName.length - 1];
+		let cache_hit = cache.get(profname);
+		if (cache_hit) {
+			linkProfessor(target, cache_hit, lastName, UF_SCHOOL_ID)
+		} else {
+			// cache missed
+			searchProfessorByName(profname, UF_SCHOOL_ID)
+			.then((results) => {
+				cache.set(profname, results);
+				linkProfessor(target, results, lastName, UF_SCHOOL_ID)
+				}
+			)
 			.catch((error) => {
 					// if no luck, then provide a link with just [Last Name]
 					console.log(error);
@@ -43,6 +54,7 @@ selectors.forEach((selector) => {
 					return
 				}
 			)
+		}
 	});
 });
 
