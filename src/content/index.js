@@ -2,11 +2,13 @@ import { filterNonProfessors, replaceCustomNicknames, createProfessorSearchStrin
 
 import { normalizeGraphQLData, isCloseEnough } from '../utils/outputfiltering.js';
 
-import { setupProfCard } from '../components/professorcard.js';
+import { setupEvalsCard, setupRMPCard } from '../components/professorcard.js';
 
 import { setupProfTag } from '../components/professortag.js';
 
 import { UF_SCHOOL_ID } from '../constants/school.js';
+
+import { evalsData } from '../gatorevals/data.js'
 
 import LRUCache from '../utils/lrucache.js';
 
@@ -33,24 +35,27 @@ const selectors = ['.sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-
 selectors.forEach((selector) => {
 	document.arrive(selector, function (target) {
 		let profname = filterNonProfessors(target.textContent.trim());
+		// if (evalsData.has(profname)) {
+		// 	setupEvalsCard(target, profname, evalsData[profname]);
+		// }
 		profname = replaceCustomNicknames(profname);
 		let lastName = profname.split(' ');
 		lastName = lastName[lastName.length - 1];
 		let cache_hit = cache.get(profname);
 		if (cache_hit) {
-			linkProfessor(target, cache_hit, lastName, UF_SCHOOL_ID)
+			linkRMP(target, cache_hit, lastName, UF_SCHOOL_ID)
 		} else {
 			// cache missed
 			searchProfessorByName(profname, UF_SCHOOL_ID)
 			.then((results) => {
 				cache.set(profname, results);
-				linkProfessor(target, results, lastName, UF_SCHOOL_ID)
+				linkRMP(target, results, lastName, UF_SCHOOL_ID)
 				}
 			)
 			.catch((error) => {
 					// if no luck, then provide a link with just [Last Name]
 					console.log(error);
-					linkProfessor(target, [], lastName, UF_SCHOOL_ID)
+					linkRMP(target, [], lastName, UF_SCHOOL_ID)
 					return
 				}
 			)
@@ -211,7 +216,7 @@ async function GetProfessorRating(searchterm, schoolId) {
  * @param {string} lastName last name of the professor queried
  * @param {string} schoolId uf schoolid
  */
-function linkProfessor(element, results, lastName, schoolId) {
+function linkRMP(element, results, lastName, schoolId) {
 	element.setAttribute('target', '_blank');
 	element.classList.add('blueText');
 	element.parentElement && element.parentElement.classList.add('classSearchBasicResultsText');
@@ -225,9 +230,8 @@ function linkProfessor(element, results, lastName, schoolId) {
 	} else {
 		let profData = result;
 		setupProfTag(element, profData, lastName, schoolId, true);
-		setupProfCard(element, profData);
+		setupRMPCard(element, profData);
 	}
 }
-
 
 

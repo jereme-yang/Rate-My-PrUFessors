@@ -14,9 +14,15 @@ export function setupProfTag(element, profData, lastName, schoolId, isFound = tr
 	
     const balance = Object.assign(
         document.createElement('div'), {
-          className: 'link-balance', 
-          textContent: '🔎 RMP'
+          className: 'link-balance'
         });
+	balance.appendChild(Object.assign(
+        document.createElement('div'), {
+          className: 'link-balance-rmp', 
+          textContent: '🔎 RMP'
+        })
+	);
+
 	
 	const rating = isFound ? getOverallScoreDiv(profData.getQualityRatingString()) : getOverallScoreDiv("", false);
 	

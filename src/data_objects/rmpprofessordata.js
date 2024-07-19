@@ -56,4 +56,7 @@ export default class RMPProfessorData {
 	getFullName() {
 		return `${this.firstName} ${this.middleName ? ` ${this.middleName} ` : ""} ${this.lastName}`
 	}
+	getDisplayName() {
+		return this.firstName.length + this.lastName.length < 23 ? this.firstName + " " + this.lastName : this.firstName[0] + ". " + this.lastName;
+	}
 }

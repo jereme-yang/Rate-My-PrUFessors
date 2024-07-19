@@ -1,8 +1,42 @@
+.evals-rating {
+  text-decoration: underline;
+  flex: 1;
+}
+.evals-description {
+  font-weight: bold;
+}
+.evals-rating-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.prof-card-name-and-logo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .prof-card-rating-title {
   font-weight: bold;
   display: block;
   font-size: 25px;
 }
+
+.prof-card-evals-rating {
+  margin-left: 20px;
+  width: 100px; /* Fixed width for the container */
+  height: 20px; /* Fixed height for the container */
+  overflow: hidden; /* Hide any overflow */
+  white-space: nowrap; /* Prevent line breaks */
+  flex: 1;
+}
+
+.albert {
+    height: 100%; /* Set image height to container height */
+    display: inline-block; /* Display images inline */
+}
+
 .prof-card-rating-text {
   font-size: 1em;
 }
@@ -50,6 +84,13 @@
   float: bottom; 
   text-align: right;
   font-size: 1em;
+}
+.link-balance-rmp {
+  float: right;
+  transition: transform 0.15s ease; /* Transition for smooth scaling */
+}
+.link-balance-rmp:hover {
+  transform: scale(0.95); /* Scale down to 80% of original size */
 }
 .rating-number {
     text-align: center;

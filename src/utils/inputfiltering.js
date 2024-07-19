@@ -1,8 +1,4 @@
-const customNames = {
-	'Shu Huang': 'Shu-jen Huang',
-	'Konstantina Christodoulopoulou' : "Christodouloupolou"
-};
-
+import { customNames } from "./nicknames.js";
 
 /**
  *  Maps real name -> nick name

@@ -17,12 +17,13 @@
 	"web_accessible_resources": [
 		{
 			"resources": [
-				"./tippy.css",
-				"./light.css",
-				"./content.css",
-				"./content.bundle.js.map",
-				"./background.bundle.js.map",
-				"./background.bundle.js.LICENSE.txt"
+				"/tippy.css",
+				"/light.css",
+				"/content.css",
+				"/content.bundle.js.map",
+				"/background.bundle.js.map",
+				"/background.bundle.js.LICENSE.txt",
+				"/images/web-accessible/*"
 			],
 			"matches": [
 				"https://one.uf.edu/*"

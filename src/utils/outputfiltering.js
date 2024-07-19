@@ -1,4 +1,5 @@
 import RMPProfessorData from "../data_objects/rmpprofessordata.js"
+import { customNames } from "./nicknames.js";
 
 /**
  * Helper function for getProfessorRating
@@ -25,6 +26,7 @@ export function normalizeGraphQLData(data) {
  * @returns 
  */
 export function isCloseEnough(a, b) {
+    b = customNames[b] ? customNames[b] : b;
 	const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
 
     for (let i = 0; i <= a.length; i++) {

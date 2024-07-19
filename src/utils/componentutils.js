@@ -1,3 +1,5 @@
+import { EMOJIS } from "../constants/emoji.js";
+
 export function getOverallScoreDiv(score, isFound = true) {
 	const rating = document.createElement('div');
 	rating.classList.add('rating-number');
@@ -23,6 +25,25 @@ export function getOverallScoreDiv(score, isFound = true) {
 	}
 
 	return rating
+}
+
+
+export function getOverallEmojiDiv(score){
+	const emoji = document.createElement("div");
+  
+	if (score >= 4.0) {
+	  emoji.textContent = EMOJIS.get("GOOD") + " Excellent";
+	} else if (score >= 2.0) {
+	  emoji.textContent = EMOJIS.get("FINE") + " Fine";
+	} else if (score > 0) {
+	  emoji.textContent = EMOJIS.get("LUCK") + " Good Luck";
+	} else {
+	  emoji.textContent = EMOJIS.get("UNKNOWN") + " Unknown";
+	}
+  
+	emoji.style.flex = "1";
+  
+	return emoji;
 }
 
 
