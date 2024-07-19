@@ -71,8 +71,20 @@
     padding: 5px;
     border-radius:20px;
 }
-
-
+.prof-card-review-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.prof-card-review-course {
+  font-size: 1.1em;
+  font-weight: 500;
+}
+.prof-card-review-date {
+  float: right;
+  font-weight: 500;
+  font-size: 1.1em;
+}
 .link-name {
   text-decoration: none; 
   margin-left: auto;

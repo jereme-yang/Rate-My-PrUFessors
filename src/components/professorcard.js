@@ -37,8 +37,6 @@ function mainSection(div, profData) {
 	);
 	div.appendChild(d);
 }
-
-
 function difficultySection(div, profData) {
 	const getDifficultyEmoji = difficulty => (
 		difficulty >= 4.8 ? EMOJIS.get("FORBIDDEN") :
@@ -108,24 +106,32 @@ function tagsSection(div, profData) {
 	}
 }
 function reviewSection(div, mostHelpfulReview) {
+	const getSemesterOfReviewString = a => {
+		const [month, , year] = a;
+		const semester = (month >= 10 || month <= 1) ? "Fall " :
+						 (month >= 6 && month <= 9) ? "Summer " :
+						 "Spring ";
+		return semester + year;
+	  };
 	div.appendChild(document.createElement('br'));
 	div.appendChild(document.createElement("hr"));
-	// Mark if class was online
-	div.appendChild(
-		createToolTipElement(`Most Helpful Rating: ${mostHelpfulReview.course
-			}${mostHelpfulReview.isOnlineClass ? ' (Online)' : ''}`)
-	);
 	
-	div.appendChild(
-		createToolTipElement(mostHelpfulReview.date.toLocaleDateString())
-	);
-
-	if (mostHelpfulReview.iWouldTakeAgain) {
-		div.appendChild(
-			createToolTipElement(`Would take again: ${mostHelpfulReview.iWouldTakeAgain ? "Yes" : "No"}`)
-		);
-	}
-
+	const container = document.createElement("div");
+	container.className = "prof-card-review-header";
+	const name = Object.assign(
+		document.createElement('div'),{ 
+		className: 'prof-card-review-course', 
+		textContent: mostHelpfulReview.course
+	  });
+	const logo = Object.assign(
+		document.createElement('div'), {
+		  className: 'prof-card-review-date',
+		  textContent: getSemesterOfReviewString(mostHelpfulReview.date.toLocaleDateString().split('/'))
+		});
+	container.appendChild(name);
+	container.appendChild(logo);
+	div.appendChild(container);
+	
 	div.appendChild(
 		createToolTipElement(mostHelpfulReview.comments)
 	);
@@ -265,17 +271,29 @@ function evalsSubratingsSection(div, data) {
 export function setupEvalsCard(element, name, data) {
 	const div = document.createElement('div');
 
-	div.appendChild(Object.assign(
+	const container = document.createElement("div");
+	container.className = "prof-card-name-and-logo";
+	const nameDiv = Object.assign(
 		document.createElement('div'),{ 
 		className: 'prof-card-rating-title', 
 		textContent: name
-	  })
-	);
+	  });
+	const logo = Object.assign(
+		document.createElement('img'), {
+		  src: chrome.runtime.getURL('images/web-accessible/evals.svg'),
+		  style: 'padding-top: 5px; height: 25px; width: auto;'
+		});
+	container.appendChild(nameDiv);
+	container.appendChild(logo);
+	div.appendChild(container);
 	div.appendChild(
-		createToolTipElement(`Overall GatorEvals statistics`)
+		createToolTipElement(`Overall GatorEvals Statistics`)
 	);
 
 	evalsMainSection(div, data);
+
+	div.appendChild(document.createElement('br'));
+	div.appendChild(document.createElement("hr"));
 
 	evalsSubratingsSection(div, data);
 
@@ -284,7 +302,7 @@ export function setupEvalsCard(element, name, data) {
 		theme: 'light',
 		placement: 'right',
 		// show delay is 250ms, hide delay is 0 ms
-		delay: [250, 0],
+		delay: [150, 0],
 		content: div
 	});
 }
