@@ -93,9 +93,13 @@ export default function (env) {
 						to: BUILD_DIR,
 					},
 					{
-						from: path.resolve(SRC_DIR, '../node_modules/tippy.js/themes/light.css'),
+						from: path.resolve(SRC_DIR, '../node_modules/tippy.js/animations/shift-away-extreme.css'),
 						to: BUILD_DIR,
 					},
+					{
+						from: path.resolve(SRC_DIR, '../node_modules/tippy.js/themes/light.css'),
+						to: BUILD_DIR,
+					}
 				],
 			}),
 			new WebExtPlugin({

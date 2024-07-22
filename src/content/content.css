@@ -3,11 +3,14 @@
   flex: 1;
 }
 .evals-description {
-  font-weight: bold;
+  font-weight: 500;
+  float: right;
+  padding-left: 5px;
 }
 .evals-rating-table td {
   border: 1px solid #ddd;
   padding: 8px;
+  padding-bottom: 5px;
   text-align: center;
 }
 
@@ -26,7 +29,7 @@
 .prof-card-evals-rating {
   margin-left: 20px;
   width: 100px; /* Fixed width for the container */
-  height: 20px; /* Fixed height for the container */
+  height: 35px; /* Fixed height for the container */
   overflow: hidden; /* Hide any overflow */
   white-space: nowrap; /* Prevent line breaks */
   flex: 1;
@@ -39,6 +42,13 @@
 
 .prof-card-rating-text {
   font-size: 1em;
+}
+.prof-card-evals-main-info {
+  display: flex;  
+  justify-content: center; 
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 .prof-card-main-info {
   display: flex;  
@@ -93,16 +103,29 @@
 }
 .link-balance {
   color: rgb(128, 128, 128);
-  float: bottom; 
+  position:relative;
+  bottom: 0;
+  right: 0;
   text-align: right;
   font-size: 1em;
 }
 .link-balance-rmp {
   float: right;
-  transition: transform 0.15s ease; /* Transition for smooth scaling */
+  transition: transform 0.15s ease; 
+  text-decoration: none;
 }
 .link-balance-rmp:hover {
-  transform: scale(0.95); /* Scale down to 80% of original size */
+  transform: scale(0.95); 
+  text-decoration: none;
+}
+.link-balance-evals {
+  float: right;
+  transition: transform 0.15s ease; 
+  text-decoration: none;
+}
+.link-balance-evals:hover {
+  transform: scale(0.95); 
+  text-decoration: none;
 }
 .rating-number {
     text-align: center;

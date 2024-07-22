@@ -20,6 +20,7 @@
 				"/tippy.css",
 				"/light.css",
 				"/content.css",
+				"/shift-away-extreme.css",
 				"/content.bundle.js.map",
 				"/background.bundle.js.map",
 				"/background.bundle.js.LICENSE.txt",
@@ -37,9 +38,10 @@
 				"./content.bundle.js"
 			],
 			"css": [
-				"./tippy.css",
-				"./light.css",
-				"./content.css"
+				"/tippy.css",
+				"/light.css",
+				"/content.css",
+				"/shift-away-extreme.css"
 			],
 			"matches": [
 				"https://one.uf.edu/*"

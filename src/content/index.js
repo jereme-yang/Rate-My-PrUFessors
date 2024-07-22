@@ -19,7 +19,7 @@ import 'arrive';
 
 // apply css styles to the page
 let head = document.getElementsByTagName("head")[0];
-let csses = ["tippy.css", "light.css", "content.css"];
+let csses = ["tippy.css", "light.css", "shift-away-extreme.css",  "content.css"];
 for (const css of csses) {
 	var fileref = document.createElement("link");
 	fileref.setAttribute("rel", "stylesheet");
@@ -34,28 +34,25 @@ const cache = new LRUCache(15);
 const selectors = ['.sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-epRvzc.fFLxNM'];
 selectors.forEach((selector) => {
 	document.arrive(selector, function (target) {
-		let profname = filterNonProfessors(target.textContent.trim());
-		// if (evalsData.has(profname)) {
-		// 	setupEvalsCard(target, profname, evalsData[profname]);
-		// }
-		profname = replaceCustomNicknames(profname);
+		let name = filterNonProfessors(target.textContent.trim());
+		let profname = replaceCustomNicknames(name);
 		let lastName = profname.split(' ');
 		lastName = lastName[lastName.length - 1];
 		let cache_hit = cache.get(profname);
 		if (cache_hit) {
-			linkRMP(target, cache_hit, lastName, UF_SCHOOL_ID)
+			linkRMP(target, cache_hit, lastName, UF_SCHOOL_ID, name)
 		} else {
 			// cache missed
 			searchProfessorByName(profname, UF_SCHOOL_ID)
 			.then((results) => {
 				cache.set(profname, results);
-				linkRMP(target, results, lastName, UF_SCHOOL_ID)
+				linkRMP(target, results, lastName, UF_SCHOOL_ID, name)
 				}
 			)
 			.catch((error) => {
 					// if no luck, then provide a link with just [Last Name]
 					console.log(error);
-					linkRMP(target, [], lastName, UF_SCHOOL_ID)
+					linkRMP(target, [], lastName, UF_SCHOOL_ID, name)
 					return
 				}
 			)
@@ -216,7 +213,7 @@ async function GetProfessorRating(searchterm, schoolId) {
  * @param {string} lastName last name of the professor queried
  * @param {string} schoolId uf schoolid
  */
-function linkRMP(element, results, lastName, schoolId) {
+function linkRMP(element, results, lastName, schoolId, fullName = "") {
 	element.setAttribute('target', '_blank');
 	element.classList.add('blueText');
 	element.parentElement && element.parentElement.classList.add('classSearchBasicResultsText');
@@ -229,8 +226,11 @@ function linkRMP(element, results, lastName, schoolId) {
 		setupProfTag(element, [], lastName, schoolId, false);
 	} else {
 		let profData = result;
-		setupProfTag(element, profData, lastName, schoolId, true);
-		setupRMPCard(element, profData);
+		setupProfTag(element, profData, lastName, schoolId, true)
+		.then(() => {
+			setupRMPCard(element.children[1].children[1].children[0], profData);
+			setupEvalsCard(element.children[1].children[1].children[1], fullName, evalsData);
+		})
 	}
 }
 

@@ -156,28 +156,32 @@ export function setupRMPCard(element, profData) {
 	if (profData.mostHelpfulRating) { reviewSection(div, profData.mostHelpfulRating); }
 
 	// create popup attached to element with div as contents
-	tippy(element, {
+	const tip = tippy(element.parentElement.parentElement.parentElement, {
+		trigger: 'manual',
 		theme: 'light',
 		placement: 'right',
-		// show delay is 150ms, hide delay is 0 ms
+		maxWidth: 380,
+		animation: 'shift-away-extreme',
 		delay: [150, 0],
 		content: div
 	});
+	element.addEventListener('mouseenter', () => tip.show())
+	element.addEventListener('mouseleave', () => tip.hide())
 }
-
 function getEvalsScoreDiv(score) {
 	const div = document.createElement('div');
 	div.classList.add('evals-rating');
 	if (score >= 4) {
 		div.style.color =  'rgb(0, 128, 0)';
-	} else if (score >= 2) {
+	} else if (score >= 3) {
 		div.style.color =  'rgb(255, 255, 0)';
 	} else if (score >= 0) {
 		div.style.color =  'rgb(128, 0, 0)';
 	} else {
 		div.style.color =  'rgb(128, 128, 128)';
 	}
-	return div;
+	div.textContent = score;
+	return getOverallScoreDiv(score);
 }
 function evalsMainSection(div, data) {
 	const getGatorEvals = rating => {
@@ -226,9 +230,11 @@ function evalsMainSection(div, data) {
 		return evalsDiv;
 	}
 	const d = document.createElement("div");
-	d.classList.add("prof-card-main-info");
+	d.classList.add("prof-card-evals-main-info");
 	d.appendChild(getEvalsScoreDiv(data['avg']));
-	d.appendChild(getOverallEmojiDiv(data['avg']));
+	const idcanymore = getOverallEmojiDiv(data['avg']);
+	idcanymore.style.flex = "0.4";
+	d.appendChild(idcanymore);
 	d.appendChild(getGatorEvals(data['avg']));
 	div.appendChild(d);
 }
@@ -254,13 +260,17 @@ function evalsSubratingsSection(div, data) {
 		const row = document.createElement('tr');
 		rowData.forEach(cellData => {
 			const cell = document.createElement('td');
-			cell.appendChild(getEvalsScoreDiv(cellData.rating));
-			cell.appendChild(Object.assign(
+			cell.style.width = '50%';
+			const container = document.createElement('div');
+			container.style.display = 'flex';
+			container.appendChild(getEvalsScoreDiv(cellData.rating));
+			container.appendChild(Object.assign(
 				document.createElement('span'),{
 				className: 'evals-description',
 				textContent: cellData.description
 			  })
 			);
+			cell.appendChild(container);
 			row.appendChild(cell);
 		});
 		table.appendChild(row);
@@ -269,40 +279,49 @@ function evalsSubratingsSection(div, data) {
 	div.appendChild(table);
 }
 export function setupEvalsCard(element, name, data) {
-	const div = document.createElement('div');
+	if (data[name]) {
+		data = data[name];
+		const div = document.createElement('div');
 
-	const container = document.createElement("div");
-	container.className = "prof-card-name-and-logo";
-	const nameDiv = Object.assign(
-		document.createElement('div'),{ 
-		className: 'prof-card-rating-title', 
-		textContent: name
-	  });
-	const logo = Object.assign(
-		document.createElement('img'), {
-		  src: chrome.runtime.getURL('images/web-accessible/evals.svg'),
-		  style: 'padding-top: 5px; height: 25px; width: auto;'
+		const container = document.createElement("div");
+		container.className = "prof-card-name-and-logo";
+		const nameDiv = Object.assign(
+			document.createElement('div'),{ 
+			className: 'prof-card-rating-title', 
+			textContent: name
 		});
-	container.appendChild(nameDiv);
-	container.appendChild(logo);
-	div.appendChild(container);
-	div.appendChild(
-		createToolTipElement(`Overall GatorEvals Statistics`)
-	);
+		const logo = Object.assign(
+			document.createElement('img'), {
+			src: chrome.runtime.getURL('images/web-accessible/evals.svg'),
+			style: 'padding-top: 5px; height: 25px; width: auto;'
+			});
+		container.appendChild(nameDiv);
+		container.appendChild(logo);
+		div.appendChild(container);
+		div.appendChild(
+			createToolTipElement(`Composite GatorEvals data from inception to Spring 2024`)
+		);
 
-	evalsMainSection(div, data);
+		evalsMainSection(div, data);
 
-	div.appendChild(document.createElement('br'));
-	div.appendChild(document.createElement("hr"));
+		div.appendChild(document.createElement('br'));
+		div.appendChild(document.createElement("hr"));
 
-	evalsSubratingsSection(div, data);
+		evalsSubratingsSection(div, data);
 
-	// create popup attached to element with div as contents
-	tippy(element, {
-		theme: 'light',
-		placement: 'right',
-		// show delay is 250ms, hide delay is 0 ms
-		delay: [150, 0],
-		content: div
-	});
+		// create popup attached to element with div as contents
+		const tip = tippy(element.parentElement.parentElement.parentElement, {
+			trigger: 'manual',
+			theme: 'light',
+			placement: 'right',
+			maxWidth: 380,
+			animation: 'shift-away-extreme',
+			delay: [150, 0],
+			content: div
+		});
+
+		element.addEventListener('mouseenter', () => tip.show())
+		element.addEventListener('mouseleave', () => tip.hide())
+	}
+	
 }
