@@ -168,22 +168,7 @@ export function setupRMPCard(element, profData) {
 	element.addEventListener('mouseenter', () => tip.show())
 	element.addEventListener('mouseleave', () => tip.hide())
 }
-function getEvalsScoreDiv(score) {
-	const div = document.createElement('div');
-	div.classList.add('evals-rating');
-	if (score >= 4) {
-		div.style.color =  'rgb(0, 128, 0)';
-	} else if (score >= 3) {
-		div.style.color =  'rgb(255, 255, 0)';
-	} else if (score >= 0) {
-		div.style.color =  'rgb(128, 0, 0)';
-	} else {
-		div.style.color =  'rgb(128, 128, 128)';
-	}
-	div.textContent = score;
-	return getOverallScoreDiv(score);
-}
-function evalsMainSection(div, data) {
+function evalsMainSection(div, avg) {
 	const getGatorEvals = rating => {
 		const evalsDiv = document.createElement('div');
 		evalsDiv.classList.add('prof-card-evals-rating');
@@ -231,26 +216,26 @@ function evalsMainSection(div, data) {
 	}
 	const d = document.createElement("div");
 	d.classList.add("prof-card-evals-main-info");
-	d.appendChild(getEvalsScoreDiv(data['avg']));
-	const idcanymore = getOverallEmojiDiv(data['avg']);
+	d.appendChild(getOverallScoreDiv(avg));
+	const idcanymore = getOverallEmojiDiv(avg);
 	idcanymore.style.flex = "0.4";
 	d.appendChild(idcanymore);
-	d.appendChild(getGatorEvals(data['avg']));
+	d.appendChild(getGatorEvals(avg));
 	div.appendChild(d);
 }
 function evalsSubratingsSection(div, data) {
 	const tableData = [
 		[
-			{ rating: data['enthusiastic'], description: "Enthusiastic about the Course" },
-			{ rating: data['explain'], description: "Explained Material Clearly" }
+			{ rating: data[0], description: "Enthusiastic about the Course" },
+			{ rating: data[1], description: "Explained Material Clearly" }
 		],
 		[
-			{ rating: data['standards'], description: "Maintained Clear Standards" },
-			{ rating: data['engaging'], description: "Engaging & Interactive" }
+			{ rating: data[2], description: "Maintained Clear Standards" },
+			{ rating: data[3], description: "Engaging & Interactive" }
 		],
 		[
-			{ rating: data['feedback'], description: "Provided Prompt & Meaningful feedback" },
-			{ rating: data['instrumental'], description: "Instrumental to my Learning" }
+			{ rating: data[4], description: "Provided Prompt & Meaningful feedback" },
+			{ rating: data[5], description: "Instrumental to my Learning" }
 		]
 	];
 	const table = document.createElement('table');
@@ -263,7 +248,7 @@ function evalsSubratingsSection(div, data) {
 			cell.style.width = '50%';
 			const container = document.createElement('div');
 			container.style.display = 'flex';
-			container.appendChild(getEvalsScoreDiv(cellData.rating));
+			container.appendChild(getOverallScoreDiv(cellData.rating));
 			container.appendChild(Object.assign(
 				document.createElement('span'),{
 				className: 'evals-description',
@@ -299,10 +284,10 @@ export function setupEvalsCard(element, name, data) {
 		container.appendChild(logo);
 		div.appendChild(container);
 		div.appendChild(
-			createToolTipElement(`Composite GatorEvals data from inception to Spring 2024`)
+			createToolTipElement(`Composite GatorEvals data until Spring 2024`)
 		);
 
-		evalsMainSection(div, data);
+		evalsMainSection(div, data[6]);
 
 		div.appendChild(document.createElement('br'));
 		div.appendChild(document.createElement("hr"));

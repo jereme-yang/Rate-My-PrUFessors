@@ -63,9 +63,9 @@ export default function (env) {
 		// webpack is only being used to copy data from package.json into manifest.json
 		entry: {
 			background: './src/background/index.js',
-			content: './src/content/index.js',
+			content: './src/content/index.js'
 		},
-		devtool: env.production ? 'source-map' : 'cheap-source-map',
+		devtool: env.production ? false : false,
 		output: {
 			filename: '[name].bundle.js',
 			path: BUILD_DIR,
