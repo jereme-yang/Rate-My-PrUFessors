@@ -20,7 +20,7 @@ GatorEvals data was scraped from the gatorevals website using [this repository](
 ![Screenshot](images/screenshot1.png)
 ![Screenshot](images/screenshot2.png)
 
-[link-chrome]: https://chrome.google.com/webstore/detail/rate-my-professors-for-ri/lcionigofpcbfpmnipnioapimoggnbda?hl=en&authuser=0 "Version published on Chrome Web Store"
+[link-chrome]: https://chrome.google.com/webstore/detail/aabhhefmldjjhcnacbpgooeanamkallk "Version published on Chrome Web Store"
 [link-firefox]: https://addons.mozilla.org/firefox/downloads/file/4307708/rate_my_prufessors-2.0.5.xpi "Version for Mozilla Add-ons (private)"
 [link-safari]: https://TODO.com "Version for Apple Safari"
 
