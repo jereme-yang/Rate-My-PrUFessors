@@ -49,3 +49,10 @@ export function createProfessorSearchStrings(nameComponents, nicknames = []) {
 
 	return searchStrings
 }
+
+
+export function abbreviateName(fullName, cutoff = 23) {
+	const firstName = fullName.split(' ')[0];
+	const lastName = fullName.split(" ").pop();
+	return firstName.length + lastName.length < cutoff ? firstName + " " + lastName : firstName[0] + ". " + lastName;
+}

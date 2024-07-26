@@ -13,7 +13,6 @@
   padding-bottom: 5px;
   text-align: center;
 }
-
 .prof-card-name-and-logo {
   display: flex;
   justify-content: space-between;
@@ -137,6 +136,10 @@
     margin-bottom: 3px;
 }
   
+.classSearchBasicResultsText{
+  display: flex;
+  flex-direction: column;
+}
 
 /* The green (optimum) bar in Firefox */
 .normal-meter meter:-moz-meter-optimum::-moz-meter-bar {

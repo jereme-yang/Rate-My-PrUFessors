@@ -1,8 +1,9 @@
 import { getOverallScoreDiv } from "../utils/componentutils.js";
+import { UF_SCHOOL_ID } from "../constants/school.js";
 
-export function setupProfTag(element, profData, lastName, schoolId, isFound = true) {
+export function setupProfTag(element, profData, lastName) {
 	return new Promise(function(resolve, reject) {
-		isFound ? element.setAttribute('href', profData.getURL()) : element.setAttribute('href', `https://www.ratemyprofessors.com/search/professors?q=${lastName}&sid=${schoolId}`);
+		profData !== undefined ? element.setAttribute('href', profData.getURL()) : element.setAttribute('href', `https://www.ratemyprofessors.com/search/professors?q=${lastName}&sid=${UF_SCHOOL_ID}`);
 		element.setAttribute('style', 'display: flex;');
 		
 		const linkName = document.createElement('div');
@@ -13,7 +14,7 @@ export function setupProfTag(element, profData, lastName, schoolId, isFound = tr
 		const RMPTag = document.createElement('a');
 		RMPTag.setAttribute('target', '_blank');
 		RMPTag.classList.add('link-balance-rmp');
-		RMPTag.href = isFound ? profData.getURL() : `https://www.ratemyprofessors.com/search/professors?q=${lastName}&sid=${schoolId}`;
+		RMPTag.href = profData !== undefined ? profData.getURL() : `https://www.ratemyprofessors.com/search/professors?q=${lastName}&sid=${UF_SCHOOL_ID}`;
 		RMPTag.textContent = '🔎 RMP';
 
 		const EVALSTag = document.createElement('a');
@@ -23,7 +24,7 @@ export function setupProfTag(element, profData, lastName, schoolId, isFound = tr
 		EVALSTag.textContent = '🔎 EVALS';
 		
 		const container = document.createElement('div');
-		container.style = "position: relative;";
+		container.setAttribute('style', 'margin-left: auto;');
 
 		const balance = Object.assign(
 			document.createElement('div'), {
@@ -36,7 +37,7 @@ export function setupProfTag(element, profData, lastName, schoolId, isFound = tr
 		container.appendChild(linkName);
 		container.appendChild(balance);
 		
-		const rating = isFound ? getOverallScoreDiv(profData.getQualityRatingString()) : getOverallScoreDiv("", false);
+		const rating = profData !== undefined ? getOverallScoreDiv(profData.getQualityRatingString()) : getOverallScoreDiv("", false);
 		
 		element.appendChild(rating);
 		element.appendChild(container);

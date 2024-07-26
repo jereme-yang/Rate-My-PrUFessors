@@ -30,35 +30,31 @@ for (const css of csses) {
 
 
 // driver code to call API queries and append html contents
-const cache = new LRUCache(15);
-const selectors = ['.sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-epRvzc.fFLxNM'];
-selectors.forEach((selector) => {
-	document.arrive(selector, function (target) {
-		let name = filterNonProfessors(target.textContent.trim());
-		let profname = replaceCustomNicknames(name);
-		let lastName = profname.split(' ');
-		lastName = lastName[lastName.length - 1];
-		let cache_hit = cache.get(profname);
-		if (cache_hit) {
-			linkRMP(target, cache_hit, lastName, UF_SCHOOL_ID, name)
-		} else {
-			// cache missed
-			searchProfessorByName(profname, UF_SCHOOL_ID)
-			.then((results) => {
-				cache.set(profname, results);
-				linkRMP(target, results, lastName, UF_SCHOOL_ID, name)
-				}
-			)
-			.catch((error) => {
-					// if no luck, then provide a link with just [Last Name]
-					console.log(error);
-					linkRMP(target, [], lastName, UF_SCHOOL_ID, name)
-					return
-				}
-			)
-		}
-	});
+const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
+const selector = '.sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-epRvzc.fFLxNM';
+document.arrive(selector, function (target) {
+	let name = filterNonProfessors(target.textContent.trim());
+	let filteredname = replaceCustomNicknames(name);
+	let cache_hit = cache.get(filteredname);
+	if (cache_hit) {
+		createHTML(target, cache_hit, name)
+	} else {
+		// cache missed
+		searchProfessorByName(filteredname, UF_SCHOOL_ID)
+		.then((results) => {
+			cache.set(filteredname, results);
+			createHTML(target, results, name)
+			}
+		)
+		.catch((error) => {
+				// if no luck, then provide a link
+				createHTML(target, [], name)
+				return
+			}
+		)
+	}
 });
+
 
 
 /**
@@ -210,28 +206,23 @@ async function GetProfessorRating(searchterm, schoolId) {
  * Adds link and professor card to the course selection page
  * @param {HTMLElement} element element to append link/card to
  * @param {Array[RMPProfessorData]} results queried list of RMPProfessorData objects 
- * @param {string} lastName last name of the professor queried
- * @param {string} schoolId uf schoolid
+ * @param {String} fullName trimmed name of the professor from course selection page
  */
-function linkRMP(element, results, lastName, schoolId, fullName = "") {
+function createHTML(element, results, fullName) {
 	element.setAttribute('target', '_blank');
 	element.classList.add('blueText');
 	element.parentElement && element.parentElement.classList.add('classSearchBasicResultsText');
-
+	const lastName = fullName.split(' ').pop();
 	// check if the results have a match
-	const result = results.find(result => isCloseEnough(result.getFullName(), element.textContent));
+	const profData = results.find(result => isCloseEnough(result.getFullName(), element.textContent));
 	
 	// create a professor tag / card
-	if (result === undefined) {
-		setupProfTag(element, [], lastName, schoolId, false);
-	} else {
-		let profData = result;
-		setupProfTag(element, profData, lastName, schoolId, true)
-		.then(() => {
-			setupRMPCard(element.children[1].children[1].children[0], profData);
-			setupEvalsCard(element.children[1].children[1].children[1], fullName, evalsData);
-		})
-	}
+	setupProfTag(element, profData, lastName)
+	.then(() => {
+		setupRMPCard(element.children[1].children[1].children[0], fullName, profData);
+		setupEvalsCard(element.children[1].children[1].children[1], fullName, evalsData);
+	})
+	
 }
 
 

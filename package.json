@@ -1,7 +1,7 @@
 {
   "name": "Rate My PrUFessors",
-  "version": "2.0.5",
-  "description": "Links RMP and GatorEvals data while searching for classes on ONE.UF",
+  "version": "3.0",
+  "description": "Links and displays RMP/GatorEvals data while searching for classes on ONE.UF",
   "private": true,
   "type": "module",
   "dependencies": {

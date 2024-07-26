@@ -1,4 +1,6 @@
 import { createToolTipElement, getOverallScoreDiv, getOverallEmojiDiv, createMeter } from "../utils/componentutils.js";
+import { RMP_LOGO, EVALS_LOGO } from "../constants/logos.js"
+import { abbreviateName } from "../utils/inputfiltering.js";
 import { EMOJIS } from "../constants/emoji.js";
 import tippy from "tippy.js"
 
@@ -11,13 +13,8 @@ function titleSection(div, profData) {
 		className: 'prof-card-rating-title', 
 		textContent: profData.getDisplayName()
 	  });
-	const logo = Object.assign(
-		document.createElement('img'), {
-		  src: chrome.runtime.getURL('images/web-accessible/rmp.svg'),
-		  style: 'padding-top: 5px; height: 25px; width: auto;'
-		});
 	container.appendChild(name);
-	container.appendChild(logo);
+	container.appendChild(RMP_LOGO());
 	div.appendChild(container);
 	div.appendChild(
 		createToolTipElement(`Professor in ${profData.department} ${EMOJIS.get(profData.department.toLowerCase())}`)
@@ -140,20 +137,51 @@ function reviewSection(div, mostHelpfulReview) {
 		createToolTipElement(`👍${mostHelpfulReview.totalThumbsUp} 👎${mostHelpfulReview.totalThumbsDown}`)
 	);
 }
-export function setupRMPCard(element, profData) {
+function notFoundSection(div, name, logo) {
+	const nameContainer = document.createElement('div');
+	nameContainer.className = "prof-card-name-and-logo";
+	nameContainer.appendChild(Object.assign(
+		document.createElement('div'), {
+		  className: 'prof-card-rating-title',
+		  textContent: abbreviateName(name)
+		}));
+	nameContainer.appendChild(logo)
+
+	const nfContainer = document.createElement('div');
+	nfContainer.setAttribute('style', 'margin: 130px 40px');
+	nfContainer.appendChild(Object.assign(
+		document.createElement('div'), {
+		  style: 'font-size: 25px; text-align: center; font-weight: 500',
+		  textContent: 'Not Found'
+		}));
+	nfContainer.appendChild(Object.assign(
+		document.createElement('img'), {
+		  src: chrome.runtime.getURL('images/web-accessible/not_found.png'),
+		  style: 'width: 300px; height: auto'
+		}));
+	nfContainer.appendChild(Object.assign(
+		document.createElement('div'), {
+			style: 'font-size: 12px; text-align: center; font-weight: 500',
+			textContent: 'Click 🔎 to search'
+		}));
+	div.appendChild(nameContainer);
+	div.appendChild(nfContainer);
+}
+export function setupRMPCard(element, fullName, profData) {
 	const div = document.createElement('div');
 
-	titleSection(div, profData)
-
-	mainSection(div, profData);
-	
-	difficultySection(div, profData);
-	
-	wouldtakeagainSection(div, profData);
-	
-	tagsSection(div, profData);
-
-	if (profData.mostHelpfulRating) { reviewSection(div, profData.mostHelpfulRating); }
+	if (profData !== undefined) {
+		titleSection(div, profData)
+		mainSection(div, profData);
+		difficultySection(div, profData);
+		wouldtakeagainSection(div, profData);
+		tagsSection(div, profData);
+		if (profData.mostHelpfulRating) { reviewSection(div, profData.mostHelpfulRating); }
+	}
+	else {
+		// create no prof found tag
+		notFoundSection(div, fullName, RMP_LOGO());
+	}
 
 	// create popup attached to element with div as contents
 	const tip = tippy(element.parentElement.parentElement.parentElement, {
@@ -224,6 +252,8 @@ function evalsMainSection(div, avg) {
 	div.appendChild(d);
 }
 function evalsSubratingsSection(div, data) {
+
+
 	const tableData = [
 		[
 			{ rating: data[0], description: "Enthusiastic about the Course" },
@@ -264,24 +294,18 @@ function evalsSubratingsSection(div, data) {
 	div.appendChild(table);
 }
 export function setupEvalsCard(element, name, data) {
+	const div = document.createElement('div');
 	if (data[name]) {
 		data = data[name];
-		const div = document.createElement('div');
-
 		const container = document.createElement("div");
 		container.className = "prof-card-name-and-logo";
 		const nameDiv = Object.assign(
 			document.createElement('div'),{ 
 			className: 'prof-card-rating-title', 
-			textContent: name
+			textContent: abbreviateName(name)
 		});
-		const logo = Object.assign(
-			document.createElement('img'), {
-			src: chrome.runtime.getURL('images/web-accessible/evals.svg'),
-			style: 'padding-top: 5px; height: 25px; width: auto;'
-			});
 		container.appendChild(nameDiv);
-		container.appendChild(logo);
+		container.appendChild(EVALS_LOGO());
 		div.appendChild(container);
 		div.appendChild(
 			createToolTipElement(`Composite GatorEvals data until Spring 2024`)
@@ -293,20 +317,21 @@ export function setupEvalsCard(element, name, data) {
 		div.appendChild(document.createElement("hr"));
 
 		evalsSubratingsSection(div, data);
-
-		// create popup attached to element with div as contents
-		const tip = tippy(element.parentElement.parentElement.parentElement, {
-			trigger: 'manual',
-			theme: 'light',
-			placement: 'right',
-			maxWidth: 380,
-			animation: 'shift-away-extreme',
-			delay: [150, 0],
-			content: div
-		});
-
-		element.addEventListener('mouseenter', () => tip.show())
-		element.addEventListener('mouseleave', () => tip.hide())
 	}
-	
+	else {
+		// not found card
+		notFoundSection(div, name, EVALS_LOGO());
+	}
+	// create popup attached to element with div as contents
+	const tip = tippy(element.parentElement.parentElement.parentElement, {
+		trigger: 'manual',
+		theme: 'light',
+		placement: 'right',
+		maxWidth: 380,
+		animation: 'shift-away-extreme',
+		delay: [150, 0],
+		content: div
+	});
+	element.addEventListener('mouseenter', () => tip.show())
+	element.addEventListener('mouseleave', () => tip.hide())
 }

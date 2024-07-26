@@ -13,7 +13,6 @@ export function getOverallScoreDiv(score, isFound = true) {
 	const strong = document.createElement('strong');
 	strong.textContent = isNaN(score) ? "NA" : Number(score).toFixed(1);
 	rating.appendChild(strong);
-
 	if (score >= 4) {
 		rating.style.backgroundColor =  'rgba(0, 128, 0, 0.25)';
 	} else if (score >= 2) {
