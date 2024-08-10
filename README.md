@@ -4,8 +4,6 @@
 
 [**Firefox** addon][link-firefox] 
 
-[**Safari** addon][link-safari]
-
 [**Edge** extension][link-chrome]
 
 
@@ -21,8 +19,7 @@ GatorEvals data was scraped from the gatorevals website using [this repository](
 ![Screenshot](images/screenshot2.png)
 
 [link-chrome]: https://chrome.google.com/webstore/detail/aabhhefmldjjhcnacbpgooeanamkallk "Version published on Chrome Web Store"
-[link-firefox]: https://addons.mozilla.org/firefox/downloads/file/4307708/rate_my_prufessors-2.0.5.xpi "Version for Mozilla Add-ons (private)"
-[link-safari]: https://TODO.com "Version for Apple Safari"
+[link-firefox]: https://addons.mozilla.org/firefox/downloads/file/4327245/rate_my_prufessors-3.0.xpi "Version for Mozilla Add-ons (private)"
 
 
 ## Building
