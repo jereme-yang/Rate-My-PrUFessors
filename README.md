@@ -13,7 +13,7 @@ The respective icons offer a preview of the ratings, with hyperlinks pointing to
 
 GraphQL is utilized to make API requests for RMP ratings. To better find professors while preventing false negatives, this extension utilizes input filtering by mapping certain professor names to their associated nick name (i.e. Shu-jen Huang -> Shu Huang). The search results are then compared against the original input to verify that a false negative result is not shown.
 
-GatorEvals data was scraped from the gatorevals website using [this repository](https://github.com/jereme-yang/gatorevals-scraper). GatorEvals data is stored in plain text within the source code, and will be updated periodically as more data is available. I am working on automating this process.
+GatorEvals data was scraped from the gatorevals website using [this repository](https://github.com/jereme-yang/gatorevals-scraper). GatorEvals data is stored in plain text within the source code, and will be updated periodically as more data is available. I am working on automating this process with a backend hosted on aws. see the aws-backend branch for implementation details.
 
 ![Screenshot](images/screenshot1.png)
 ![Screenshot](images/screenshot2.png)
