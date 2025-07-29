@@ -16,7 +16,7 @@ Directly alongside instructor names, you’ll see icons showing preview ratings.
 ## How It Works
 
 - **Rate My Professors (RMP)** data is fetched live using GraphQL API requests.
-- To improve matching and prevent false negatives, the extension filters professor names by mapping common nicknames (e.g., *Shu-jen Huang* → *Shu Huang*) before querying RMP.
+- To improve matching and prevent false negatives, the extension filters professor names by mapping common nicknames (e.g., _Shu-jen Huang_ → _Shu Huang_) before querying RMP.
 - **GatorEvals** ratings come from scraped data hosted in this repository’s backend (built with AWS Lambda and DynamoDB). Currently, GatorEvals data is embedded in the extension source code and updated periodically.
 - Automation for updating GatorEvals data is in progress—check out the [`aws-backend` branch](https://github.com/jereme-yang/gatorevals-scraper/tree/aws-backend) for implementation details.
 
@@ -45,12 +45,12 @@ npm install
 
 Choose the appropriate command based on your target browser and environment:
 
-| Command                 | Description                       |
-|-------------------------|---------------------------------|
-| `npm run build-dev:chrome`  | Development build for Chrome      |
-| `npm run build-dev:firefox` | Development build for Firefox     |
-| `npm run build:chrome`       | Production build for Chrome       |
-| `npm run build:firefox`      | Production build for Firefox      |
+| Command                     | Description                   |
+| --------------------------- | ----------------------------- |
+| `npm run build-dev:chrome`  | Development build for Chrome  |
+| `npm run build-dev:firefox` | Development build for Firefox |
+| `npm run build:chrome`      | Production build for Chrome   |
+| `npm run build:firefox`     | Production build for Firefox  |
 
 ### Release
 
