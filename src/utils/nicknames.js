@@ -1,3 +1,3 @@
 export const customNames = {
-	'Shu Huang': 'Shu-jen Huang'
+  "Shu Huang": "Shu-jen Huang",
 };

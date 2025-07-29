@@ -35,24 +35,24 @@
 }
 
 .albert {
-    height: 100%; /* Set image height to container height */
-    display: inline-block; /* Display images inline */
+  height: 100%; /* Set image height to container height */
+  display: inline-block; /* Display images inline */
 }
 
 .prof-card-rating-text {
   font-size: 1em;
 }
 .prof-card-evals-main-info {
-  display: flex;  
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
   width: 380px;
   padding-top: 10px;
   padding-bottom: 5px;
 }
 .prof-card-main-info {
-  display: flex;  
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
   padding-top: 3px;
   padding-bottom: 5px;
@@ -62,24 +62,24 @@
 }
 .prof-card-meter-section {
   /* possible block */
-  display: flex;  
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
   text-align: center;
 }
 .prof-card-tags {
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
 }
 .prof-card-tag-bubble {
-    margin-left: 3px;
-    margin-right: 3px;
-    padding: 5px;
-    border-radius:20px;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding: 5px;
+  border-radius: 20px;
 }
 .prof-card-review-header {
   display: flex;
@@ -96,14 +96,14 @@
   font-size: 1.1em;
 }
 .link-name {
-  text-decoration: none; 
+  text-decoration: none;
   margin-left: auto;
-  padding-left:10px;
+  padding-left: 10px;
   text-align: right;
 }
 .link-balance {
   color: rgb(128, 128, 128);
-  position:relative;
+  position: relative;
   bottom: 0;
   right: 0;
   text-align: right;
@@ -111,33 +111,33 @@
 }
 .link-balance-rmp {
   float: right;
-  transition: transform 0.15s ease; 
+  transition: transform 0.15s ease;
   text-decoration: none;
 }
 .link-balance-rmp:hover {
-  transform: scale(0.95); 
+  transform: scale(0.95);
   text-decoration: none;
 }
 .link-balance-evals {
   float: right;
-  transition: transform 0.15s ease; 
+  transition: transform 0.15s ease;
   text-decoration: none;
 }
 .link-balance-evals:hover {
-  transform: scale(0.95); 
+  transform: scale(0.95);
   text-decoration: none;
 }
 .rating-number {
-    text-align: center;
-    padding: 10px;
-    width: 41px;
-    height: 41px;
-    margin-left: 0px;
-    border-radius:10px;
-    margin-bottom: 3px;
+  text-align: center;
+  padding: 10px;
+  width: 41px;
+  height: 41px;
+  margin-left: 0px;
+  border-radius: 10px;
+  margin-bottom: 3px;
 }
-  
-.classSearchBasicResultsText{
+
+.classSearchBasicResultsText {
   display: flex;
   flex-direction: column;
 }
@@ -178,7 +178,7 @@
   background: rgba(0, 128, 0, 0.25);
 }
 /* The red (even less good) bar in Chrome etc. */
-.normal-meter meter::-webkit-meter-even-less-good-value{
+.normal-meter meter::-webkit-meter-even-less-good-value {
   background: rgba(128, 0, 0, 0.25);
 }
 .inverse-meter meter::-webkit-meter-even-less-good-value {

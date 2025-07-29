@@ -15,8 +15,6 @@ import { setupProfTag } from "../components/professortag.js";
 
 import { UF_SCHOOL_ID } from "../constants/school.js";
 
-import { evalsData } from "../gatorevals/data.js";
-
 import LRUCache from "../utils/lrucache.js";
 
 import browser from "webextension-polyfill";
@@ -37,7 +35,7 @@ for (const css of csses) {
 // driver code to call API queries and append html contents
 const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
 const selector =
-  ".sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-djVXDX.bTioKM";
+  ".sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-epRvzc.fFLxNM";
 document.arrive(selector, function (target) {
   let name = filterNonProfessors(target.textContent.trim());
   let filteredname = replaceCustomNicknames(name);
@@ -206,6 +204,31 @@ async function GetProfessorRating(searchterm, schoolId) {
     })
     .then((data) => normalizeGraphQLData(data));
 }
+/**
+ * Fetches professor evaluation data from a public API using the professor's full name.
+ *
+ * Sends a GET request to the API Gateway endpoint with the given profname as a query parameter.
+ * Returns the parsed `data` object from the response if available, or `null` if the request fails
+ * or no data is found.
+ *
+ * @param {string} profname - The full name of the professor to look up (e.g., "John Smith").
+ * @returns {Promise<Object|null>} A promise that resolves to the evaluation data object or null on error or no result.
+ */
+async function getEvalDataFromAPI(profname) {
+  const url = `https://wqk002l1j3.execute-api.us-east-2.amazonaws.com/default/rmp-gatorevals-lambda/?profname=${encodeURIComponent(
+    profname
+  )}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const json = await response.json();
+    return json.data || null;
+  } catch (err) {
+    console.error("Error fetching from evals API:", err);
+    return null;
+  }
+}
 
 /**
  * Adds link and professor card to the course selection page
@@ -214,27 +237,18 @@ async function GetProfessorRating(searchterm, schoolId) {
  * @param {String} fullName trimmed name of the professor from course selection page
  */
 function createHTML(element, results, fullName) {
-  element.setAttribute("target", "_blank");
-  element.classList.add("blueText");
-  element.parentElement &&
-    element.parentElement.classList.add("classSearchBasicResultsText");
-  const lastName = fullName.split(" ").pop();
-  // check if the results have a match
-  const profData = results.find((result) =>
-    isCloseEnough(result.getFullName(), element.textContent)
-  );
-
-  // create a professor tag / card
-  setupProfTag(element, profData, lastName).then(() => {
-    setupRMPCard(
-      element.children[1].children[1].children[0],
-      fullName,
-      profData
-    );
-    setupEvalsCard(
-      element.children[1].children[1].children[1],
-      fullName,
-      evalsData
-    );
-  });
+	element.setAttribute('target', '_blank');
+	element.classList.add('blueText');
+	element.parentElement && element.parentElement.classList.add('classSearchBasicResultsText');
+	const lastName = fullName.split(' ').pop();
+	// check if the results have a match
+	const profData = results.find(result => isCloseEnough(result.getFullName(), element.textContent));
+	
+	// create a professor tag / card
+	setupProfTag(element, profData, lastName)
+	.then(() => {
+		setupRMPCard(element.children[1].children[1].children[0], fullName, profData);
+		setupEvalsCard(element.children[1].children[1].children[1], fullName, evalsData);
+	})
+	
 }
