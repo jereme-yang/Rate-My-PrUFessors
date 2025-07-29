@@ -1,45 +1,63 @@
 # Rate My PrUFessors Extension
 
-[**Chrome** extension][link-chrome] 
+[**Chrome Extension**](https://chromewebstore.google.com/detail/rate-my-prufessors/aabhhefmldjjhcnacbpgooeanamkallk?hl=en) | [**Edge Extension**](https://chromewebstore.google.com/detail/rate-my-prufessors/aabhhefmldjjhcnacbpgooeanamkallk?hl=en)
 
-[**Firefox** addon][link-firefox] 
+---
 
-[**Edge** extension][link-chrome]
+This browser extension enhances the [ONE.UF course search](https://one.uf.edu/soc/) by displaying professor ratings from both:
 
+- [Rate My Professors](https://www.ratemyprofessors.com/)
+- [GatorEvals](https://gatorevals.aa.ufl.edu/public-results/)
 
-This extension shows the [Rate My Professors](https://www.ratemyprofessors.com/) and [GatorEvals](https://gatorevals.aa.ufl.edu/public-results/) ratings of professors while searching for classes on [ONE.UF](https://one.uf.edu/soc/).
+Directly alongside instructor names, you’ll see icons showing preview ratings. Clicking the icons links you to the respective rating website for more details.
 
-The respective icons offer a preview of the ratings, with hyperlinks pointing to the respective rating website.
+---
 
-GraphQL is utilized to make API requests for RMP ratings. To better find professors while preventing false negatives, this extension utilizes input filtering by mapping certain professor names to their associated nick name (i.e. Shu-jen Huang -> Shu Huang). The search results are then compared against the original input to verify that a false negative result is not shown.
+## How It Works
 
-GatorEvals data was scraped from the gatorevals website using [this repository](https://github.com/jereme-yang/gatorevals-scraper). GatorEvals data is stored in plain text within the source code, and will be updated periodically as more data is available. I am working on automating this process with a backend hosted on aws. see the aws-backend branch for implementation details.
+- **Rate My Professors (RMP)** data is fetched live using GraphQL API requests.
+- To improve matching and prevent false negatives, the extension filters professor names by mapping common nicknames (e.g., *Shu-jen Huang* → *Shu Huang*) before querying RMP.
+- **GatorEvals** ratings come from scraped data hosted in this repository’s backend (built with AWS Lambda and DynamoDB). Currently, GatorEvals data is embedded in the extension source code and updated periodically.
+- Automation for updating GatorEvals data is in progress—check out the [`aws-backend` branch](https://github.com/jereme-yang/gatorevals-scraper/tree/aws-backend) for implementation details.
 
-![Screenshot](images/screenshot1.png)
-![Screenshot](images/screenshot2.png)
+---
 
-[link-chrome]: https://chrome.google.com/webstore/detail/aabhhefmldjjhcnacbpgooeanamkallk "Version published on Chrome Web Store"
-[link-firefox]: https://addons.mozilla.org/firefox/downloads/file/4327245/rate_my_prufessors-3.0.xpi "Version for Mozilla Add-ons (private)"
+## Screenshots
 
+![Extension UI on ONE.UF course page](images/screenshot1.png)  
+![Rating details popup](images/screenshot2.png)
 
-## Building
+---
 
-The build process goes through a few stages.
+## Building the Extension
 
-If you just want to run a build, use one of the following commands based on whether you want dev/prod builds and what browser you are building for:
-- `npm run build-dev:chrome`
-- `npm run build-dev:firefox`
-- `npm run build:chrome`
-- `npm run build:firefox`
+### Prerequisites
 
-You'll probably want to `npm install` first if you haven't already.
+Make sure you have [Node.js](https://nodejs.org/) and npm installed.
 
-`npm run release` will run the `clean`, `build:chrome`, and `build:firefox` targets to generate two production zip files from a clean build folder which should be ready for distribution
+### Install dependencies
 
-To run the extension in your browser for development purposes, follow these instructions:
+```bash
+npm install
+```
 
-https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
+### Build commands
 
-Testing the output to ensure extensions are valid (using `web-ext lint`) is done automatically as part of the build process. Packaging the extension into a .zip file is also automatic.
+Choose the appropriate command based on your target browser and environment:
 
-To run unit tests: `npm run test`
+| Command                 | Description                       |
+|-------------------------|---------------------------------|
+| `npm run build-dev:chrome`  | Development build for Chrome      |
+| `npm run build-dev:firefox` | Development build for Firefox     |
+| `npm run build:chrome`       | Production build for Chrome       |
+| `npm run build:firefox`      | Production build for Firefox      |
+
+### Release
+
+To generate clean production-ready zip files for distribution (Chrome and Firefox), run:
+
+```bash
+npm run release
+```
+
+This command runs clean, build:chrome, and build:firefox sequentially, producing ready-to-publish extension packages.
