@@ -1,4 +1,4 @@
-export const evalsData ={
+export const evalsData: Record<string, number[]> ={
   "Jessica Aaron": [
     4.45,
     4.33,
