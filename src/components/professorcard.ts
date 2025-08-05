@@ -9,7 +9,26 @@ import { abbreviateName } from "../utils/inputfiltering.js";
 import { EMOJIS } from "../constants/emoji.js";
 import tippy from "tippy.js";
 
-function titleSection(div, profData) {
+export interface MostHelpfulReview {
+  course: string;
+  date: Date;
+  comments: string;
+  totalThumbsUp: number;
+  totalThumbsDown: number;
+}
+
+export interface ProfData {
+  getDisplayName(): string;
+  department: string;
+  getQualityRatingString(): string;
+  ratingsCount: number;
+  difficultyGPA: number;
+  wouldTakeAgainPercentage?: number;
+  topTags: string[];
+  mostHelpfulRating?: MostHelpfulReview;
+}
+
+function titleSection(div: HTMLElement, profData: ProfData) {
   const container = document.createElement("div");
   container.className = "prof-card-name-and-logo";
   const name = Object.assign(document.createElement("div"), {
@@ -27,10 +46,10 @@ function titleSection(div, profData) {
     )
   );
 }
-function mainSection(div, profData) {
+
+function mainSection(div: HTMLElement, profData: ProfData) {
   const d = document.createElement("div");
   d.classList.add("prof-card-main-info");
-  // https://stackoverflow.com/questions/313893/how-to-measure-time-taken-by-a-function-to-execute
   d.appendChild(getOverallScoreDiv(profData.getQualityRatingString()));
   d.appendChild(getOverallEmojiDiv(profData.getQualityRatingString()));
   d.appendChild(
@@ -41,8 +60,9 @@ function mainSection(div, profData) {
   );
   div.appendChild(d);
 }
-function difficultySection(div, profData) {
-  const getDifficultyEmoji = (difficulty) =>
+
+function difficultySection(div: HTMLElement, profData: ProfData) {
+  const getDifficultyEmoji = (difficulty: number) =>
     difficulty >= 4.8
       ? EMOJIS.get("FORBIDDEN")
       : difficulty >= 4.0
@@ -62,33 +82,37 @@ function difficultySection(div, profData) {
   );
   div.appendChild(
     createMeter(
-      profData.difficultyGPA == "0" ? undefined : profData.difficultyGPA,
+      profData.difficultyGPA == 0 ? undefined : profData.difficultyGPA,
       "5.0",
       true
     )
   );
 }
-function wouldtakeagainSection(div, profData) {
-  const getTakeAgainEmoji = (percent) =>
-    percent >= 75
+
+function wouldtakeagainSection(div: HTMLElement, profData: ProfData) {
+  const getTakeAgainEmoji = (percent: number | undefined) =>
+    percent !== undefined && percent >= 75
       ? EMOJIS.get("FIRE")
-      : percent >= 33
+      : percent !== undefined && percent >= 33
       ? EMOJIS.get("MID")
-      : percent >= 0
+      : percent !== undefined && percent >= 0
       ? EMOJIS.get("SKULL")
       : EMOJIS.get("UNKNOWN");
   div.appendChild(
     Object.assign(document.createElement("strong"), {
       className: "prof-card-meter-title",
       textContent: `${getTakeAgainEmoji(
-        profData.wouldTakeAgainPercentage ?? "N/A"
+        profData.wouldTakeAgainPercentage
       )} Would take again`,
     })
   );
-  div.appendChild(createMeter(profData.wouldTakeAgainPercentage, "100", false));
+  div.appendChild(
+    createMeter(profData.wouldTakeAgainPercentage, "100", false)
+  );
 }
-function tagsSection(div, profData) {
-  const getTagsDiv = (tags) => {
+
+function tagsSection(div: HTMLElement, profData: ProfData) {
+  const getTagsDiv = (tags: string[]) => {
     const ret = document.createElement("div");
     ret.classList.add("prof-card-tags");
 
@@ -118,9 +142,11 @@ function tagsSection(div, profData) {
     div.appendChild(getTagsDiv(profData.topTags.slice(0, 3)));
   }
 }
-function reviewSection(div, mostHelpfulReview) {
-  const getSemesterOfReviewString = (a) => {
-    const [month, , year] = a;
+
+function reviewSection(div: HTMLElement, mostHelpfulReview: MostHelpfulReview) {
+  const getSemesterOfReviewString = (a: string[]) => {
+    const [monthStr, , year] = a;
+    const month = parseInt(monthStr, 10);
     const semester =
       month >= 10 || month <= 1
         ? "Fall "
@@ -156,7 +182,8 @@ function reviewSection(div, mostHelpfulReview) {
     )
   );
 }
-function notFoundSection(div, name, logo) {
+
+function notFoundSection(div: HTMLElement, name: string, logo: HTMLElement) {
   const nameContainer = document.createElement("div");
   nameContainer.className = "prof-card-name-and-logo";
   nameContainer.appendChild(
@@ -190,7 +217,12 @@ function notFoundSection(div, name, logo) {
   div.appendChild(nameContainer);
   div.appendChild(nfContainer);
 }
-export function setupRMPCard(element, fullName, profData) {
+
+export function setupRMPCard(
+  element: HTMLElement,
+  fullName: string,
+  profData?: ProfData
+): void {
   const div = document.createElement("div");
 
   if (profData !== undefined) {
@@ -203,12 +235,10 @@ export function setupRMPCard(element, fullName, profData) {
       reviewSection(div, profData.mostHelpfulRating);
     }
   } else {
-    // create no prof found tag
     notFoundSection(div, fullName, RMP_LOGO());
   }
 
-  // create popup attached to element with div as contents
-  const tip = tippy(element.parentElement.parentElement.parentElement, {
+  const tip = tippy(element.parentElement?.parentElement?.parentElement as HTMLElement, {
     trigger: "manual",
     theme: "light",
     placement: "right",
@@ -220,18 +250,16 @@ export function setupRMPCard(element, fullName, profData) {
   element.addEventListener("mouseenter", () => tip.show());
   element.addEventListener("mouseleave", () => tip.hide());
 }
-function evalsMainSection(div, avg) {
-  const getGatorEvals = (rating) => {
+
+function evalsMainSection(div: HTMLElement, avg: number) {
+  const getGatorEvals = (rating: number) => {
     const evalsDiv = document.createElement("div");
     evalsDiv.classList.add("prof-card-evals-rating");
 
-    // Get the number in the 1s place
     let onesPlace = Math.floor(rating);
-
-    // Get the number in the decimal place
     let decimalPlace = (rating - onesPlace) * 100;
 
-    let i;
+    let i: number;
     for (i = 0; i < onesPlace; i++) {
       evalsDiv.appendChild(
         Object.assign(document.createElement("img"), {
@@ -241,7 +269,7 @@ function evalsMainSection(div, avg) {
       );
     }
     if (decimalPlace != 0) {
-      const getPartialAlbert = (decimalPlace) =>
+      const getPartialAlbert = (decimalPlace: number) =>
         decimalPlace >= 85
           ? "albert-90"
           : decimalPlace >= 65
@@ -285,7 +313,8 @@ function evalsMainSection(div, avg) {
   d.appendChild(getGatorEvals(avg));
   div.appendChild(d);
 }
-function evalsSubratingsSection(div, data) {
+
+function evalsSubratingsSection(div: HTMLElement, data: number[]) {
   const tableData = [
     [
       { rating: data[0], description: "Enthusiastic about the Course" },
@@ -325,10 +354,15 @@ function evalsSubratingsSection(div, data) {
 
   div.appendChild(table);
 }
-export function setupEvalsCard(element, name, data) {
+
+export function setupEvalsCard(
+  element: HTMLElement,
+  name: string,
+  data: Record<string, number[]>
+): void {
   const div = document.createElement("div");
   if (data[name]) {
-    data = data[name];
+    const evalData = data[name];
     const container = document.createElement("div");
     container.className = "prof-card-name-and-logo";
     const nameDiv = Object.assign(document.createElement("div"), {
@@ -340,18 +374,16 @@ export function setupEvalsCard(element, name, data) {
     div.appendChild(container);
     div.appendChild(createToolTipElement(`Composite GatorEvals data`));
 
-    evalsMainSection(div, data[6]);
+    evalsMainSection(div, evalData[6]);
 
     div.appendChild(document.createElement("br"));
     div.appendChild(document.createElement("hr"));
 
-    evalsSubratingsSection(div, data);
+    evalsSubratingsSection(div, evalData);
   } else {
-    // not found card
     notFoundSection(div, name, EVALS_LOGO());
   }
-  // create popup attached to element with div as contents
-  const tip = tippy(element.parentElement.parentElement.parentElement, {
+  const tip = tippy(element.parentElement?.parentElement?.parentElement as HTMLElement, {
     trigger: "manual",
     theme: "light",
     placement: "right",
