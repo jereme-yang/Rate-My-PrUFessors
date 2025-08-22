@@ -64,6 +64,7 @@ export default function (env) {
     entry: {
       background: "./build/background/index.js",
       content: "./build/content/index.js",
+      popup: "./build/popup/index.js",
     },
     devtool: env.production ? false : false,
     output: {
@@ -82,6 +83,10 @@ export default function (env) {
             transform(content) {
               return modify(content, env.browser === "firefox");
             },
+          },
+          {
+            from: path.join(SRC_DIR, "popup.html"),
+            to: BUILD_DIR,
           },
           {
             from: IMG_DIR,
