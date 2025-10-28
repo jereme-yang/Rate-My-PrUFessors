@@ -36,8 +36,7 @@ for (const css of csses) {
 
 // driver code to call API queries and append html contents
 const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
-const selector =
-  ".sc-kpDqfm.dvjGPq.MuiTypography-root.MuiTypography-body1.sc-djVXDX.bTioKM";
+const selector = 'p[class*="MuiTypography-body1"]';
 document.arrive(selector, function (target) {
   let name = filterNonProfessors(target.textContent.trim());
   let filteredname = replaceCustomNicknames(name);
