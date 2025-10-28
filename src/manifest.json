@@ -47,10 +47,7 @@
     "scripts": ["./background.bundle.js"]
   },
   "icons": {
-    "16": "./images/icon-16.png",
-    "32": "./images/icon-32.png",
-    "64": "./images/icon-64.png",
-    "128": "./images/icon-128.png"
+    "64": "./images/icon-64.png"
   },
   "action": {
     "default_popup": "popup.html"
