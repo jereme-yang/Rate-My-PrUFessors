@@ -36,8 +36,8 @@ for (const css of csses) {
 
 // driver code to call API queries and append html contents
 const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
-const selector = 'p[class*="MuiTypography-body1"]';
-document.arrive(selector, function (target) {
+
+function handleArrival(target) {
   let name = filterNonProfessors(target.textContent.trim());
   let filteredname = replaceCustomNicknames(name);
   let cache_hit = cache.get(filteredname);
@@ -56,7 +56,17 @@ document.arrive(selector, function (target) {
         return;
       });
   }
-});
+}
+const selector = "p.MuiTypography-root.MuiTypography-body1.eubKXN.ijaVGN";
+
+document.arrive(
+  selector,
+  { fireOnAttributesModification: true },
+  handleArrival
+);
+
+const existingElements = document.querySelectorAll(selector);
+existingElements.forEach(handleArrival);
 
 /**
  * Given a professors name as a regular string, attempt to look up the correct professor using the RMP API
@@ -214,7 +224,6 @@ async function GetProfessorRating(searchterm, schoolId) {
  */
 function createHTML(element, results, fullName) {
   element.setAttribute("target", "_blank");
-  element.classList.add("blueText");
   element.parentElement &&
     element.parentElement.classList.add("classSearchBasicResultsText");
   const lastName = fullName.split(" ").pop();

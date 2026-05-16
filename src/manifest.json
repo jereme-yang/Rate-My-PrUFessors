@@ -26,7 +26,7 @@
         "/background.bundle.js.LICENSE.txt",
         "/images/web-accessible/*"
       ],
-      "matches": ["https://one.uf.edu/*"],
+      "matches": ["*://*.one.uf.edu/*", "*://*.one.ufl.edu/*"],
       "use_dynamic_url": true
     }
   ],
@@ -39,7 +39,8 @@
         "/content.css",
         "/shift-away-extreme.css"
       ],
-      "matches": ["https://one.uf.edu/*"],
+      "matches": ["*://*.one.uf.edu/*", "*://*.one.ufl.edu/*"],
+      "all_frames": true,
       "run_at": "document_end"
     }
   ],
