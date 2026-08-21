@@ -57,7 +57,12 @@ function handleArrival(target) {
       });
   }
 }
-const selector = "p.MuiTypography-root.MuiTypography-body1.eubKXN.ijaVGN";
+// NOTE: match on the stable MUI variant class only (substring match), not on
+// ONE.UF's CSS-in-JS-generated hash classes (e.g. emotion/styled-components
+// hashes like "eubKXN"/"ijaVGN"). Those hashes are non-deterministic and
+// regenerate on every ONE.UF frontend deploy, which silently breaks icon
+// injection if hardcoded (see git history: 32d1dce, regressed by 21deb1f).
+const selector = 'p[class*="MuiTypography-body1"]';
 
 document.arrive(
   selector,
