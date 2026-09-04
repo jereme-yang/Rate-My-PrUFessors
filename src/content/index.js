@@ -38,6 +38,12 @@ for (const css of csses) {
 const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
 
 function handleArrival(target) {
+  const text = (target.textContent || '').trim().toLowerCase();
+  
+  // Check if the text CONTAINS 'expand' or 'collapse'
+  if (text.includes('expand') || text.includes('collapse') || text === '' || text.includes("filteringby") || text.includes('results')) {
+    return; 
+  }
   let name = filterNonProfessors(target.textContent.trim());
   let filteredname = replaceCustomNicknames(name);
   let cache_hit = cache.get(filteredname);
@@ -62,7 +68,7 @@ function handleArrival(target) {
 // hashes like "eubKXN"/"ijaVGN"). Those hashes are non-deterministic and
 // regenerate on every ONE.UF frontend deploy, which silently breaks icon
 // injection if hardcoded (see git history: 32d1dce, regressed by 21deb1f).
-const selector = 'p[class*="MuiTypography-body1"]';
+const selector = 'p[class*="MuiTypography-body1"]:not([role="status"])';
 
 document.arrive(
   selector,
