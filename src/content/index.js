@@ -38,37 +38,68 @@ for (const css of csses) {
 const cache = new LRUCache(15); // LRUCache to reduce RMP API calls
 
 function handleArrival(target) {
-  const text = (target.textContent || '').trim().toLowerCase();
-  
-  // Check if the text CONTAINS 'expand' or 'collapse'
-  if (text.includes('expand') || text.includes('collapse') || text === '' || text.includes("filteringby") || text.includes('results')) {
-    return; 
+  const nameElement =
+    target.tagName === "STRONG" ? target.parentElement : target;
+
+  if (
+    !nameElement ||
+    !isInstructorName(nameElement) ||
+    nameElement.dataset.rmpProcessed
+  ) {
+    return;
   }
-  let name = filterNonProfessors(target.textContent.trim());
+
+  nameElement.dataset.rmpProcessed = "true";
+  let name = filterNonProfessors(nameElement.textContent.trim());
   let filteredname = replaceCustomNicknames(name);
   let cache_hit = cache.get(filteredname);
   if (cache_hit) {
-    createHTML(target, cache_hit, name);
+    createHTML(nameElement, cache_hit, name);
   } else {
     // cache missed
     searchProfessorByName(filteredname, UF_SCHOOL_ID)
       .then((results) => {
         cache.set(filteredname, results);
-        createHTML(target, results, name);
+        createHTML(nameElement, results, name);
       })
       .catch((error) => {
         // if no luck, then provide a link
-        createHTML(target, [], name);
+        createHTML(nameElement, [], name);
         return;
       });
   }
 }
-// NOTE: match on the stable MUI variant class only (substring match), not on
-// ONE.UF's CSS-in-JS-generated hash classes (e.g. emotion/styled-components
-// hashes like "eubKXN"/"ijaVGN"). Those hashes are non-deterministic and
-// regenerate on every ONE.UF frontend deploy, which silently breaks icon
-// injection if hardcoded (see git history: 32d1dce, regressed by 21deb1f).
-const selector = 'p[class*="MuiTypography-body1"]:not([role="status"])';
+
+function isInstructorName(target) {
+  if (!looksLikePersonName(target.textContent.trim())) {
+    return false;
+  }
+
+  // The public course search keeps a singular "Instructor" label in the
+  // field wrapper, while registration search uses an adjacent plural label.
+  const field = target.closest("div[maxwidth]");
+  const fieldLabel = field?.querySelector(":scope > div:first-child");
+  if (isInstructorLabel(fieldLabel)) {
+    return true;
+  }
+
+  return (
+    isInstructorLabel(target.previousElementSibling) ||
+    isInstructorLabel(target.parentElement?.previousElementSibling)
+  );
+}
+
+function isInstructorLabel(element) {
+  return ["Instructor", "Instructors"].includes(element?.textContent.trim());
+}
+
+function looksLikePersonName(text) {
+  return /^[A-Za-z.'-]+(?:\s+[A-Za-z.'-]+){1,4}$/.test(text);
+}
+
+// Observe stable MUI-owned typography plus bold registration-search names.
+// The semantic checks above prevent unrelated course-search text from tagging.
+const selector = '[class*="MuiTypography"], strong';
 
 document.arrive(
   selector,
