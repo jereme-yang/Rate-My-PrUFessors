@@ -39,7 +39,7 @@
         "/content.css",
         "/shift-away-extreme.css"
       ],
-      "matches": ["*://*.one.uf.edu/*", "*://*.one.ufl.edu/*"],
+      "matches": ["*://*.one.uf.edu/soc/*", "*://*.one.ufl.edu/soc/*"],
       "all_frames": true,
       "run_at": "document_end"
     }
